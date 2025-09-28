@@ -1,0 +1,17 @@
+/* ถ้าคุณติดตั้ง Tailwind v4 แล้ว ให้เอาเครื่องหมายคอมเมนต์ออกบรรทัดล่าง */
+ @use "tailwindcss";
+
+/* reset & base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: #f7f7f8;
+  color: #0f172a;
+  font-family: "Noto Sans Thai", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.65;
+}
+a { color: inherit; text-decoration: none; }
+
+/* กันรูปภาพล้นทุกที่ */
+img { max-width: 100%; height: auto; display: block; }

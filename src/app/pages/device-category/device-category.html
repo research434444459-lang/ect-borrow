@@ -1,0 +1,64 @@
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-card" role="img" [attr.aria-label]="title">
+      <div>
+        <h1 class="hero-title">{{ title }}</h1>
+        <p class="hero-sub">{{ subtitle }}</p>
+      </div>
+      <div class="hero-box">140×84</div>
+    </div>
+  </section>
+  
+  <!-- ===== Back ===== -->
+  <div class="back-bar-wrap">
+    <a class="back-bar" routerLink="/devices" aria-label="ย้อนกลับไปหน้าดูรายการอุปกรณ์">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M15 6l-6 6 6 6" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      ย้อนกลับ
+    </a>
+  </div>
+  
+ <!-- Search -->
+<div class="search-wrap">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+        <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm10 2-6-6" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <input
+        #q
+        type="text"
+        [value]="query"
+        (input)="onInput(q.value)"
+        placeholder="ค้นหาชื่อหรือ Serial number... (เช่น 650D หรือ C011)"
+        aria-label="ค้นหาชื่อหรือ Serial number"
+      />
+      <div class="search-count" *ngIf="filtered.length !== items.length">
+        พบ {{ filtered.length }} จากทั้งหมด {{ items.length }} รายการ
+      </div>
+    </div>
+  </div>
+  
+  <!-- Items -->
+  <section class="grid">
+    <article class="item" *ngFor="let it of filtered; trackBy: bySerial">
+      <div class="item-img">
+        <img [src]="it.imageUrl" [alt]="it.name" />
+      </div>
+      <div class="item-body">
+        <div class="name">ชื่ออุปกรณ์: {{ it.name }}</div>
+        <div class="meta">รหัส: <strong>{{ it.serial }}</strong></div>
+        <div class="badge">อุปกรณ์พร้อมใช้งาน: {{ it.available }}</div>
+      </div>
+    </article>
+  </section>
+  
+  <!-- ===== Footer (เหมือนเดิม) ===== -->
+  <footer role="contentinfo">
+    <div class="foot-wrap">
+      สาขาวิชาเทคโนโลยีและสื่อสารการศึกษา คณะครุศาสตร์อุตสาหกรรมและเทคโนโลยี
+      มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี
+    </div>
+  </footer>
+  

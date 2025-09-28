@@ -1,0 +1,54 @@
+<div class="max-w-7xl mx-auto px-4 mt-6">
+  <div class="bg-white/90 border border-slate-200 rounded-2xl shadow-md p-6 flex flex-wrap items-center justify-between">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-bold">เข้าสู่ระบบผู้ดูแล</h1>
+      <p class="text-slate-600 mt-1">กรอกชื่อผู้ใช้และรหัสผ่านเพื่อเข้าสู่ระบบ</p>
+    </div>
+    <div class="w-[140px] h-[84px] rounded-xl border border-slate-200 grid place-items-center text-slate-400">
+      Admin
+    </div>
+  </div>
+
+  <div class="max-w-lg mx-auto mt-6">
+    <form class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div *ngIf="errorMsg" class="mb-3 rounded-xl border border-red-200 bg-red-50 text-red-700 px-3 py-2">
+        {{ errorMsg }}
+      </div>
+
+      <div class="mb-3">
+        <label class="font-semibold text-slate-700" for="username">ชื่อผู้ใช้ (Username)</label>
+        <input class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-100"
+               id="username" type="text" formControlName="username" autocomplete="username" placeholder="ect-borrow">
+      </div>
+
+      <div class="mb-2">
+        <label class="font-semibold text-slate-700" for="password">รหัสผ่าน (Password)</label>
+        <div class="relative mt-1">
+          <input [type]="showPw ? 'text' : 'password'"
+                 class="w-full border border-slate-200 rounded-xl px-3 py-2 pr-20 outline-none focus:ring-2 focus:ring-indigo-100"
+                 id="password" formControlName="password" autocomplete="current-password" placeholder="••••••••">
+          <button type="button"
+                  class="pw-toggle"
+                  (click)="togglePw()">
+            {{ showPw ? 'ซ่อน' : 'แสดง' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between my-2">
+        <label class="inline-flex items-center gap-2 text-slate-700">
+          <input type="checkbox" formControlName="remember">
+          จำฉันไว้
+        </label>
+        <button type="button" class="forgot" (click)="errorMsg='ติดต่อผู้ดูแลระบบเพื่อรีเซ็ตรหัสผ่าน'">
+          ลืมรหัสผ่าน?
+        </button>
+      </div>
+
+      <button class="submit"
+              [disabled]="loading || form.invalid" type="submit">
+        {{ loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ' }}
+      </button>
+    </form>
+  </div>
+</div>

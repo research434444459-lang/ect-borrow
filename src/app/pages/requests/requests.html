@@ -1,0 +1,109 @@
+<!-- Nav -->
+<header class="nav" role="banner">
+  <div class="nav-wrap">
+    <a class="brand" routerLink="/" aria-label="ไปยังหน้าหลัก">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/></svg></span>
+      <div>
+        <div class="title">ระบบยืมคืนอุปกรณ์ <span style="font-weight:600;color:#334155;">Beta</span></div>
+        <div class="subtitle">Borrow &amp; Return Equipment System</div>
+      </div>
+    </a>
+    <div class="spacer"></div>
+    <nav class="nav-links" aria-label="เมนูหลัก">
+      <a routerLink="/" routerLinkActive="font-bold">หน้าหลัก</a>
+      <a routerLink="/devices" routerLinkActive="font-bold">ดูอุปกรณ์</a>
+      <a routerLink="/forecast" routerLinkActive="font-bold">เช็คจำนวน</a>
+      <a routerLink="/requests" class="primary" routerLinkActive="font-bold">เช็คสถานะคำขอ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-card">
+    <div>
+      <h1 class="hero-title">เช็คสถานะคำขอการยืม (Live)</h1>
+      <p class="hero-sub">พิมพ์ชื่อ/รหัสนักศึกษา หรือเลือกวันที่ ระบบจะแสดงผลทันที</p>
+    </div>
+    <div class="hero-box">140×84</div>
+  </div>
+</section>
+<!-- Back -->
+<div class="back-bar-wrap">
+  <a class="back-bar" routerLink="/menu" aria-label="ย้อนกลับไปหน้าดูรายการอุปกรณ์">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M15 6l-6 6 6 6" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    ย้อนกลับ
+  </a>
+</div>
+
+<!-- Form -->
+<section class="form-wrap" aria-label="แบบฟอร์มเช็คสถานะ">
+  <div class="form-card">
+    <div class="row">
+      <div class="field">
+        <label for="student">ชื่อหรือรหัสนักศึกษา</label>
+        <input id="student" #s type="text" [value]="query" (input)="onQuery(s.value)" placeholder="เช่น สมชาย ใจดี หรือ 65012345" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="date">วันที่ต้องการยืม</label>
+        <input id="date" #d type="date" [value]="dateISO" (change)="onDate(d.value)" />
+      </div>
+    </div>
+    <div class="hint">* เมื่อพิมพ์หรือเลือกวันที่ ระบบจะอัปเดตผลลัพธ์ให้ทันที</div>
+  </div>
+</section>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="summary-card">
+    ผลการค้นหาของ: <strong>{{ query.trim() || 'ทั้งหมด' }}</strong> , วันที่: <strong>{{ fmtThai(dateISO) }}</strong>
+  </div>
+</div>
+
+<!-- Loading / Error -->
+<div *ngIf="loading" class="note muted">กำลังโหลดข้อมูล...</div>
+<div *ngIf="!loading && error" class="note error">{{ error }}</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>ชื่อ-นามสกุล</th>
+          <th>รหัสนักศึกษา</th>
+          <th>วันที่ต้องการยืม</th>
+          <th>สถานะ / รายละเอียด</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="records.length; else empty">
+          <tr *ngFor="let r of records; trackBy: byKey">
+            <td>{{ r.name }}</td>
+            <td>{{ r.studentId }}</td>
+            <td>{{ fmtThai(r.date) }}</td>
+            <td>
+              <div class="status-cell">
+                <span class="badge" [ngClass]="statusClass(r.status)">{{ statusText(r.status) }}</span>
+                <a class="btn-sm" [routerLink]="['/requests', r.studentId, toYmd(r.date)]">รายละเอียด</a>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #empty>
+          <tr><td colspan="4" style="color:#64748b; padding:16px;">ไม่พบบันทึกที่ตรงกับเงื่อนไข</td></tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer role="contentinfo">
+  <div class="foot-wrap">
+    สาขาวิชาเทคโนโลยีและสื่อสารการศึกษา คณะครุศาสตร์อุตสาหกรรมและเทคโนโลยี
+    มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี
+  </div>
+</footer>

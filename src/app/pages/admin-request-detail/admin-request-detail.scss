@@ -1,0 +1,109 @@
+:host{
+  --bg:#f7f7f8; --surface:#ffffff; --text:#0f172a; --muted:#6b7280; --line:#e5e7eb; --accent:#3b82f6;
+  --radius:14px; --shadow-sm:0 1px 2px rgba(15,23,42,.06); --shadow-md:0 6px 18px rgba(15,23,42,.08);
+  display:block; background:var(--bg); color:var(--text); line-height:1.65;
+  font-family:"Noto Sans Thai", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ===== Top Nav (ให้เหมือนหน้าผู้ดูแลอื่น ๆ) ===== */
+.nav{ position:sticky; top:0; z-index:50; background:rgba(255,255,255,.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+.nav-wrap{ max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:14px; padding:12px 16px; }
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;}
+.logo{width:38px; height:38px; border-radius:10px; background:linear-gradient(180deg, #111827, #1f2937); display:grid; place-items:center; box-shadow:var(--shadow-sm);}
+.logo svg{ width:20px; height:20px; fill:#fff; opacity:.95 }
+.title{ font-weight:700; letter-spacing:.2px; white-space:nowrap; }
+.subtitle{ color:var(--muted); font-size:.9rem; }
+.spacer{flex:1}
+.nav-links{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.nav-links a, .nav-links button{
+  text-decoration:none; color:inherit; padding:8px 12px; border-radius:10px; border:1px solid transparent;
+  transition:.18s ease; background:transparent; cursor:pointer; font:inherit;
+}
+.nav-links a:hover, .nav-links button:hover{ background:#f3f4f6; border-color:#eef2f7; }
+.nav-links a.primary, .nav-links a.active{ background: var(--accent); color:#fff; box-shadow: var(--shadow-sm); }
+
+/* ===== Headings / Wrappers ===== */
+.wrap{ max-width:1180px; margin:16px auto 8px; padding:0 16px; }
+h1{ font-size: clamp(22px, 4vw, 32px); margin: 0 0 6px; }
+.sub{ color: var(--muted); margin-top: 2px; }
+
+/* Notices */
+.notice{
+  border:1px solid #e5e7eb; border-radius:10px; padding:10px 12px; background:#fff; box-shadow: var(--shadow-sm);
+}
+.notice.info{ border-color:#bfdbfe; background:#eff6ff; color:#1d4ed8; }
+.notice.warn{ border-color:#fde68a; background:#fffbeb; color:#92400e; }
+
+/* ===== Sections / Cards ===== */
+.section{ max-width:1180px; margin:12px auto; padding:0 16px; }
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-sm);
+  padding:14px;
+}
+.sec-title{ margin:0 0 10px; font-weight:800; color:#0f172a; }
+
+/* Definition grid (ซ้าย label ขวา value) */
+.def-grid{ display:grid; grid-template-columns: 240px 1fr; gap:10px 16px; align-items:flex-start; }
+@media (max-width: 900px){ .def-grid{ grid-template-columns: 1fr; } }
+.row{ display:contents; }
+.label{ color:#334155; font-weight:700; }
+.value{ color:#0f172a; }
+.value.muted{ color:#6b7280; }
+
+/* ===== Status area + controls ===== */
+.status{ max-width:1180px; margin:12px auto; padding:0 16px; }
+.status-card{
+  display:flex; flex-wrap:wrap; gap:10px 12px; align-items:center;
+  background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow-sm);
+}
+.inline-note{ color:#334155; font-weight:700; margin-left:8px; }
+.mini{
+  border:1px solid var(--line); background:#fff; color:#0f172a;
+  border-radius:10px; padding:8px 10px; outline:none; font-size:1rem;
+}
+select{ @extend .mini; padding-right: 28px; }
+.mini:focus, select:focus{ border-color:#c7d2fe; box-shadow: 0 0 0 3px #eff6ff; }
+.spacer{ flex:1; }
+.btn-back-link{ text-decoration:none; color:#1d4ed8; font-weight:700; cursor:pointer; }
+
+/* ===== Items editor (แก้ไข/ลบแถว) ===== */
+.eq-wrap{ display:block; }
+.eq-pair{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.wname, .wnum{ @extend .mini; }
+.wname{ min-width: 260px; flex: 1 1 320px; }
+.wnum{ width: 220px; }
+
+.btn-del{
+  border:1px solid #fecaca; background:#fef2f2; color:#991b1b; border-radius:10px; padding:8px 12px;
+  cursor:pointer; box-shadow:var(--shadow-sm);
+}
+.btn-del:hover{ background:#fee2e2; }
+
+.btn-add{
+  border:1px solid #c7d2fe; background:#eff6ff; color:#1d4ed8; border-radius:10px; padding:10px 14px;
+  cursor:pointer; box-shadow:var(--shadow-sm); font-weight:700;
+}
+.btn-add:hover{ background:#dbeafe; }
+
+/* Attachments */
+.file-link{ color:#0ea5e9; text-decoration:none; }
+.file-link:hover{ text-decoration:underline; }
+
+/* ===== Actions ===== */
+.actions{ max-width:1180px; margin: 10px auto 28px; padding: 0 16px; display:flex; justify-content:flex-end; gap:10px; }
+.btn{ border:0; border-radius:10px; padding:12px 16px; font-weight:700; cursor:pointer; box-shadow: var(--shadow-sm); }
+.btn-ghost{ background:#fff; border:1px solid #e5e7eb; }
+.btn-ghost:hover{ background:#f8fafc; }
+.btn-primary{ background:#111827; color:#fff; }
+.btn-primary:hover{ transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+/* ===== Status badges ===== */
+.badge{
+  display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-weight:700; border:1px solid transparent;
+}
+.b-approve { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+.b-reject  { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+.b-waived  { background:#fefce8; color:#854d0e; border-color:#fde68a; }
+.b-unavail { background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
+.b-returned{ background:#eef2ff; color:#3730a3; border-color:#c7d2fe; }
+.b-received{ background:#f0fdf4; color:#166534; border-color:#bbf7d0; }

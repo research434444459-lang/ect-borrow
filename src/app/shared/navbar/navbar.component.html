@@ -1,0 +1,38 @@
+<header class="nav" role="banner">
+  <div class="nav-wrap">
+    <a class="brand" routerLink="/" aria-label="ไปยังหน้าหลัก">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20">
+          <path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/>
+        </svg>
+      </span>
+      <div>
+        <div class="title">ระบบยืมคืนอุปกรณ์ <span style="color:#334155;font-weight:600">Beta</span></div>
+        <div class="subtitle">Borrow &amp; Return Equipment System</div>
+      </div>
+    </a>
+
+    <div class="spacer"></div>
+
+    <nav class="nav-links" aria-label="เมนูหลัก">
+      <a routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="is-active"
+         #homeRLA="routerLinkActive" [attr.aria-current]="homeRLA.isActive ? 'page' : null">หน้าหลัก</a>
+
+      <!-- ถ้าเป็น Google Form ภายนอก ให้ใช้ href + target -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSelb7_zmCP4rCRCVoH4wpS4hmyQKYTYJG0fGcrIWwvURd7wEQ/viewform?usp=dialog" routerLinkActive="is-active"
+         #formRLA="routerLinkActive" [attr.aria-current]="formRLA.isActive ? 'page' : null">แบบฟอร์มการยืมคืน</a>
+
+      <a routerLink="/devices" routerLinkActive="is-active"
+         #devRLA="routerLinkActive" [attr.aria-current]="devRLA.isActive ? 'page' : null">ดูอุปกรณ์</a>
+
+      <a routerLink="/forecast" routerLinkActive="is-active"
+         #fcRLA="routerLinkActive" [attr.aria-current]="fcRLA.isActive ? 'page' : null">เช็คจำนวน</a>
+
+      <a routerLink="/requests" routerLinkActive="is-active"
+         #reqRLA="routerLinkActive" [attr.aria-current]="reqRLA.isActive ? 'page' : null">เช็คสถานะคำขอ</a>
+
+      <a routerLink="/admin/login" class="primary" routerLinkActive="is-active"
+         #adminRLA="routerLinkActive" [attr.aria-current]="adminRLA.isActive ? 'page' : null">ผู้ดูแลระบบ</a>
+    </nav>
+  </div>
+</header>
