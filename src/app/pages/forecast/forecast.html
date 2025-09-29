@@ -1,0 +1,76 @@
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-card" role="img" aria-label="คงเหลืออุปกรณ์ตามวัน (Forecast)">
+    <div>
+      <h1 class="hero-title">คงเหลืออุปกรณ์ตามวัน (Forecast)</h1>
+      <p class="hero-sub">กรองตามวันที่และชื่อ/รหัสอุปกรณ์เพื่อดูจำนวนคงเหลือโดยประมาณ</p>
+    </div>
+    <div class="hero-box">140×84</div>
+  </div>
+</section>
+
+<!-- Back -->
+<div class="back-bar-wrap">
+  <a class="back-bar" routerLink="/menu" aria-label="ย้อนกลับไปหน้าดูรายการอุปกรณ์">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M15 6l-6 6 6 6" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    ย้อนกลับ
+  </a>
+</div>
+
+<!-- Search -->
+<form class="search-wrap" [formGroup]="form" (submit)="$event.preventDefault()">
+  <div class="search-box">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+      <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm10 2-6-6" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <label class="sr-only" for="search-q">ค้นหา</label>
+    <input id="search-q" class="grow" type="text"
+           placeholder="ค้นหาชื่อหรือ Serial number... (เช่น 650D หรือ C011)"
+           formControlName="q" />
+
+    <div class="search-count" *ngIf="!loading && !errorMsg">
+      ผลสำหรับวันที่: <strong>{{ dateStr || form.controls.date.value }}</strong>
+    </div>
+
+    <div class="date-box">
+      <label class="sr-only" for="search-date">วันที่</label>
+      <input id="search-date" type="date" formControlName="date" />
+    </div>
+  </div>
+</form>
+
+<!-- สถานะ -->
+<div class="card notice info" *ngIf="loading">กำลังโหลดข้อมูล…</div>
+<div class="card notice error" *ngIf="!loading && errorMsg">{{ errorMsg }}</div>
+
+<!-- รายการ (คลาสเดียวกับ device-category: grid/item/… ) -->
+<section class="grid" *ngIf="!loading && !errorMsg && ((items?.length ?? 0) > 0)">
+  <article class="item" *ngFor="let it of items; index as i; trackBy: trackByIdx">
+    <div class="item-img">
+      <img [src]="it.imageUrl || 'assets/no-image.png'"
+           (error)="onImgError($event)"
+           [alt]="it.name || it.serial || 'อุปกรณ์'" />
+    </div>
+    <div class="item-body">
+      <div class="name">{{ it.name || '(ไม่มีชื่อ)' }}</div>
+      <div class="meta">รหัส: <strong>{{ it.serial }}</strong></div>
+      <div class="badge">คงเหลือ: {{ it.remaining }}</div>
+    </div>
+  </article>
+</section>
+
+<div class="card empty" *ngIf="!loading && !errorMsg && ((items?.length ?? 0) === 0)">
+  ไม่พบข้อมูล
+</div>
+
+<!-- Footer -->
+<footer role="contentinfo">
+  <div class="foot-wrap">
+    สาขาวิชาเทคโนโลยีและสื่อสารการศึกษา คณะครุศาสตร์อุตสาหกรรมและเทคโนโลยี
+    มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี
+  </div>
+</footer>

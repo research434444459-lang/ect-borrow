@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "https://ect-borrow-be.onrender.com",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

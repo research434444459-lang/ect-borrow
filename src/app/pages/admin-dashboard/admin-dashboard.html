@@ -1,0 +1,53 @@
+<header class="nav" role="banner">
+  <div class="nav-wrap">
+    <a class="brand" [routerLink]="['/admin']" aria-label="ไปยังหน้าแรกผู้ดูแล">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/></svg>
+      </span>
+      <div>
+        <div class="title">ระบบยืมคืนอุปกรณ์ <span style="font-weight:600;color:#334155;">Beta</span></div>
+        <div class="subtitle">Admin Console</div>
+      </div>
+    </a>
+    <div class="spacer" aria-hidden="true"></div>
+    <nav class="nav-links" aria-label="เมนูผู้ดูแล">
+      <a [routerLink]="['/admin']" routerLinkActive="primary" [routerLinkActiveOptions]="{ exact: true }">หน้าหลัก</a>
+      <a class="card-link" routerLink="/admin/today">
+        <!-- รายการขอยืมวันนี้ -->
+      </a>
+      
+      <a routerLink="/devices">จัดการคลัง</a>
+      <a routerLink="/requests">จัดการคำขอ</a>
+      <button type="button" class="logout" (click)="logout()">ออกจากระบบ</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="intro">เลือกเมนูที่ต้องการดำเนินการ</p>
+  <section class="grid">
+    <a class="card-link" routerLink="today">
+      <div class="thumb">📅</div>
+      <div class="card-text">
+        <div class="card-title">รายการขอยืมวันนี้</div>
+        <div class="card-desc">ตรวจสอบและยืนยันคำขอที่มีกำหนดรับวันนี้</div>
+      </div>
+    </a>
+
+    <a class="card-link" routerLink="/devices">
+      <div class="thumb">📦</div>
+      <div class="card-text">
+        <div class="card-title">จัดการคลังอุปกรณ์</div>
+        <div class="card-desc">เพิ่ม/แก้ไขรายการอุปกรณ์ เช็คจำนวนคงเหลือ</div>
+      </div>
+    </a>
+
+    <a class="card-link" routerLink="/admin/requests">
+      <div class="thumb">📝</div>
+      <div class="card-text">
+        <div class="card-title">จัดการคำขออุปกรณ์</div>
+        <div class="card-desc">อนุมัติ/ปฏิเสธ อัปเดตสถานะ และเพิ่มหมายเหตุ</div>
+      </div>
+    </a>
+  </section>
+</main>

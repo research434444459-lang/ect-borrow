@@ -1,0 +1,107 @@
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-card">
+    <div>
+      <h1 class="hero-title">เช็คสถานะคำขอการยืม</h1>
+      <p class="hero-sub">รายละเอียดคำขอ</p>
+    </div>
+    <div class="hero-box">140×84</div>
+  </div>
+</section>
+
+<!-- Loading / Error -->
+<div *ngIf="loading" class="note muted">กำลังโหลดข้อมูล...</div>
+<div *ngIf="!loading && error" class="note error">{{ error }}</div>
+
+<!-- เนื้อหา: ใช้ d เป็นตัวแปร -->
+<ng-container *ngIf="!loading">
+  <ng-container *ngIf="detail as d; else notfound">
+
+    <!-- สถานะ -->
+    <div class="status-wrap">
+      <div [class]="statusClass(d.status)">
+        <span class="status-badge">สถานะ: {{ statusText(d.status) }}</span>
+        <span class="status-meta">อัปเดตล่าสุด: {{ fmtDateTimeThai(updatedAt) }}</span>
+        <span class="spacer"></span>
+        <a routerLink="/requests" class="file">ย้อนกลับไปผลการค้นหา</a>
+      </div>
+    </div>
+
+    <!-- ข้อมูลทั่วไป -->
+    <section class="section">
+      <div class="card">
+        <h3 class="sec-title">ข้อมูลทั่วไป</h3>
+        <div class="def-grid">
+          <div class="row"><div class="label">ประทับเวลา</div><div class="value">{{ d.ts || '—' }}</div></div>
+          <div class="row"><div class="label">ข้าพเจ้าได้อ่านกฎระเบียบ</div><div class="value">{{ d.confirmedRules ? 'ยืนยันแล้ว' : 'ยังไม่ยืนยัน' }}</div></div>
+          <div class="row"><div class="label">ชั้นปีการศึกษา</div><div class="value">{{ d.year || '—' }}</div></div>
+          <div class="row"><div class="label">ชื่อ - สกุล</div><div class="value">{{ d.name || '—' }}</div></div>
+          <div class="row"><div class="label">รหัสนักศึกษา</div><div class="value">{{ d.studentId || '—' }}</div></div>
+          <div class="row"><div class="label">เบอร์ติดต่อ</div><div class="value">{{ d.phone || '—' }}</div></div>
+          <div class="row"><div class="label">สมาชิกภายในกลุ่ม</div><div class="value">{{ (d.groupMembers || []).join(', ') || '—' }}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- กำหนดการรับ -->
+    <section class="section">
+      <div class="card">
+        <h3 class="sec-title">กำหนดการรับอุปกรณ์</h3>
+        <div class="def-grid">
+          <div class="row"><div class="label">วันที่เข้ารับอุปกรณ์</div><div class="value">{{ d.pickupDate || '—' }}</div></div>
+          <div class="row"><div class="label">เวลาเข้ารับอุปกรณ์</div><div class="value">{{ d.pickupTime || '—' }}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- รายวิชา -->
+    <section class="section">
+      <div class="card">
+        <h3 class="sec-title">ข้อมูลรายวิชา</h3>
+        <div class="def-grid">
+          <div class="row"><div class="label">รายวิชาที่ใช้อุปกรณ์</div><div class="value">{{ d.courseName || '—' }}</div></div>
+          <div class="row"><div class="label">รายวิชาอื่น (ถ้ามี)</div><div class="value muted">{{ d.otherCourse || '—' }}</div></div>
+          <div class="row"><div class="label">อาจารย์ประจำวิชา</div><div class="value">{{ d.teacher || '—' }}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- รายการอุปกรณ์ -->
+    <section class="section">
+      <div class="card">
+        <h3 class="sec-title">รายการอุปกรณ์ที่ขอใช้</h3>
+        <div class="def-grid">
+          <div class="row" *ngFor="let it of (d.items || []); let i=index">
+            <div class="label">{{ it.label || ('รายการ #' + (i+1)) }}</div>
+            <div class="value" [class.muted]="(it.value || '—')==='—'">{{ it.value || '—' }}</div>
+          </div>
+          <div *ngIf="!d.items || !d.items.length" class="value muted">— ไม่มีรายการอุปกรณ์ —</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- หมายเหตุ -->
+    <section class="section admin-note" *ngIf="d.adminNote">
+      <div class="note-card">
+        <h3 class="note-title">หมายเหตุจากผู้ดูแลระบบ</h3>
+        <div class="note-text">{{ d.adminNote }}</div>
+      </div>
+    </section>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #notfound>
+  <div class="section">
+    <div class="card" style="color:#64748b;">ไม่พบบันทึกคำขอของ {{ studentId }} วันที่ {{ fmtThai(dateISO) }}</div>
+  </div>
+</ng-template>
+
+<!-- Footer -->
+<footer role="contentinfo">
+  <div class="foot-wrap">
+    สาขาวิชาเทคโนโลยีและสื่อสารการศึกษา คณะครุศาสตร์อุตสาหกรรมและเทคโนโลยี
+    มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี
+  </div>
+</footer>

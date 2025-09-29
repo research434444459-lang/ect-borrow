@@ -1,0 +1,121 @@
+<!-- Nav เหมือนเดิม -->
+<header class="nav" role="banner">
+  <div class="nav-wrap">
+    <a class="brand" [routerLink]="['/admin']" aria-label="ไปยังหน้าแรกผู้ดูแล">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/></svg>
+      </span>
+      <div>
+        <div class="title">ระบบยืมคืนอุปกรณ์ <span style="font-weight:600;color:#334155;">Beta</span></div>
+        <div class="subtitle">Admin Console</div>
+      </div>
+    </a>
+    <div class="spacer" aria-hidden="true"></div>
+    <nav class="nav-links" aria-label="เมนูผู้ดูแล">
+      <a [routerLink]="['/admin']" routerLinkActive="primary" [routerLinkActiveOptions]="{ exact: true }">หน้าหลัก</a>
+      <a [routerLink]="['/admin','today']" routerLinkActive="primary">รายการวันนี้</a>
+      <a routerLink="/devices">จัดการคลัง</a>
+      <a [routerLink]="['/admin','requests']" routerLinkActive="primary">จัดการคำขอ</a>
+      <button type="button" class="logout" (click)="logout()">ออกจากระบบ</button>
+    </nav>
+  </div>
+</header>
+
+<!-- Heading -->
+<div class="wrap">
+  <h1>รายการวันนี้</h1>
+  <div class="sub">วันที่: {{ todayText }}</div>
+</div>
+
+<!-- Loading / Error -->
+<div class="wrap" *ngIf="loading">
+  <div class="notice info">กำลังดึงข้อมูล...</div>
+</div>
+<div class="wrap" *ngIf="!loading && errorMsg">
+  <div class="notice warn">{{ errorMsg }}</div>
+</div>
+
+<!-- Section 1 -->
+<div class="wrap"><span class="table-label label-borrow">ตารางคำขอการยืมวันนี้</span></div>
+<div class="table-wrap">
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th class="index">ลำดับ</th>
+          <th>ชื่อสกุล</th>
+          <th>รหัสนักศึกษา</th>
+          <th>วันที่เข้ารับ</th>
+          <th>เวลาเข้ารับ</th>
+          <th>วันที่คืน</th>
+          <th>ผู้มอบอุปกรณ์</th>
+          <th>ผู้รับอุปกรณ์คืน</th>
+          <th>การดำเนินการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!loading && borrowData.length === 0">
+          <td colspan="9" style="color:#64748b; padding:16px;">ไม่มีรายการเข้ารับวันนี้</td>
+        </tr>
+        <tr *ngFor="let r of borrowData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.id }}</td>
+          <td>{{ toThai(r.dateBorrow) }}</td>
+          <td>{{ r.time }} น.</td>
+          <td>{{ toThai(r.dateReturn) }}</td>
+          <td>{{ r.giver || '-' }}</td>
+          <td>{{ r.receiver || '-' }}</td>
+          <td>
+            <a class="btn-sm" [routerLink]="['/admin','request-detail', r.id, r.dateBorrow]">ดูรายละเอียด</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Section 2 -->
+<div class="wrap"><span class="table-label label-return">ตารางคำขอที่ต้องคืนของวันนี้</span></div>
+<div class="table-wrap">
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th class="index">ลำดับ</th>
+          <th>ชื่อสกุล</th>
+          <th>รหัสนักศึกษา</th>
+          <th>วันที่เข้ารับ</th>
+          <th>เวลาเข้ารับ</th>
+          <th>วันที่คืน</th>
+          <th>ผู้มอบอุปกรณ์</th>
+          <th>ผู้รับอุปกรณ์คืน</th>
+          <th>การดำเนินการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!loading && returnData.length === 0">
+          <td colspan="9" style="color:#64748b; padding:16px;">ไม่มีรายการคืนวันนี้</td>
+        </tr>
+        <tr *ngFor="let r of returnData; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.id }}</td>
+          <td>{{ toThai(r.dateBorrow) }}</td>
+          <td>{{ r.time }} น.</td>
+          <td>{{ toThai(r.dateReturn) }}</td>
+          <td>{{ r.giver || '-' }}</td>
+          <td>{{ r.receiver || '-' }}</td>
+          <td>
+            <a class="btn-sm" [routerLink]="['/admin','request-detail', r.id, r.dateBorrow]">ดูรายละเอียด</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Bottom -->
+<div class="actions">
+  <a class="btn-back" [routerLink]="['/admin']">กลับ</a>
+</div>

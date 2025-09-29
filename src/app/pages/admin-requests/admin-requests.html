@@ -1,0 +1,140 @@
+<!-- ===== Nav ===== -->
+<header class="nav" role="banner">
+  <div class="nav-wrap">
+    <a class="brand" [routerLink]="['/admin']" aria-label="ไปยังหน้าแรกผู้ดูแล">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/></svg>
+      </span>
+      <div>
+        <div class="title">ระบบยืมคืนอุปกรณ์ <span style="font-weight:600;color:#334155;">Beta</span></div>
+        <div class="subtitle">Admin Console</div>
+      </div>
+    </a>
+    <div class="spacer" aria-hidden="true"></div>
+    <nav class="nav-links" aria-label="เมนูผู้ดูแล">
+      <a [routerLink]="['/admin']" routerLinkActive="primary" [routerLinkActiveOptions]="{ exact: true }">หน้าหลัก</a>
+      <a [routerLink]="['/admin','today']" routerLinkActive="primary">รายการวันนี้</a>
+      <a routerLink="/devices">จัดการคลัง</a>
+      <a [routerLink]="['/admin','requests']" routerLinkActive="primary" class="active">จัดการคำขอ</a>
+      <button type="button" class="logout" (click)="logout()">ออกจากระบบ</button>
+    </nav>
+  </div>
+</header>
+
+<!-- Heading -->
+<div class="wrap">
+  <h1>รายการขอยืมทั้งหมด</h1>
+  <div class="sub">รวมรายการยืม-คืนทั้งหมด พร้อมตัวกรองค้นหา</div>
+</div>
+
+<!-- Loading / Error -->
+<div class="wrap" *ngIf="loading">
+  <div class="notice info">กำลังดึงข้อมูล...</div>
+</div>
+<div class="wrap" *ngIf="!loading && errorMsg">
+  <div class="notice warn">{{ errorMsg }}</div>
+</div>
+
+<!-- Filters -->
+<section class="filters" aria-label="ตัวกรองรายการ">
+  <div class="filter-card">
+    <div class="row">
+      <div>
+        <label for="q">ชื่อหรือรหัสนักศึกษา</label>
+        <input id="q" type="text" [(ngModel)]="q" (input)="applyFilter()"
+               placeholder="เช่น สมชาย ใจดี หรือ 65012345" autocomplete="off" />
+      </div>
+      <div>
+        <label for="date">วันที่ (ใช้กรองตามวันที่เข้ารับหรือวันที่คืน)</label>
+        <input id="date" type="date" [(ngModel)]="date" (change)="applyFilter()" />
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px;">
+      <div>
+        <label for="status">สถานะ</label>
+        <select id="status" [(ngModel)]="status" (change)="applyFilter()">
+          <option [ngValue]="''">ทั้งหมด</option>
+          <option *ngFor="let s of statuses" [ngValue]="s">{{ s }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="hint">* ระบบจะกรองทันทีเมื่อพิมพ์หรือเลือกตัวกรอง</div>
+  </div>
+</section>
+
+<!-- Table -->
+<div class="table-wrap">
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th class="index">ลำดับ</th>
+          <th>ชื่อสกุล</th>
+          <th>รหัสนักศึกษา</th>
+
+          <!-- ▼▼ เพิ่มคอลัมน์หัวข้อ "สถานะ" พร้อม sort ▼▼ -->
+          <th class="whitespace-nowrap cursor-pointer select-none" (click)="onSort('status')">
+            สถานะ
+            <span class="opacity-60 text-xs" *ngIf="sort.key === 'status'">
+              {{ sort.dir === 1 ? '▲' : '▼' }}
+            </span>
+          </th>
+          <!-- ▲▲ เพิ่มคอลัมน์หัวข้อ "สถานะ" ▲▲ -->
+
+          <th>วันที่เข้ารับ</th>
+          <th>เวลาเข้ารับ</th>
+          <th>วันที่คืน</th>
+          <th>ผู้มอบอุปกรณ์</th>
+          <th>ผู้รับอุปกรณ์คืน</th>
+          <th>การดำเนินการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!loading && rows.length === 0">
+          <!-- เดิม colspan="9" → ปรับเป็น 10 เพราะเพิ่มคอลัมน์ "สถานะ" -->
+          <td colspan="10" style="color:#64748b; padding:16px;">ไม่พบบันทึกที่ตรงกับเงื่อนไข</td>
+        </tr>
+
+        <tr *ngFor="let r of rows; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.id }}</td>
+
+          <!-- ▼▼ เพิ่มคอลัมน์ข้อมูล "สถานะ" อยู่ภายใน TR เดียวกับ *ngFor ▼▼ -->
+          <td>
+            <span
+              class="status-badge"
+              [ngStyle]="statusBadgeStyle(r.status)"
+              style="display:inline-flex;align-items:center;border-radius:9999px;padding:2px 8px;font-size:12px;font-weight:600;">
+              {{ r.status || 'ไม่ระบุ' }}
+            </span>
+          </td>
+          <!-- ▲▲ เพิ่มคอลัมน์ข้อมูล "สถานะ" ▲▲ -->
+
+          <td>{{ toThai(r.dateBorrow) }}</td>
+          <td>{{ r.time }} น.</td>
+          <td>{{ toThai(r.dateReturn) }}</td>
+          <td>{{ r.giver || '-' }}</td>
+          <td>{{ r.receiver || '-' }}</td>
+          <td>
+            <a
+  class="btn-sm"
+  [routerLink]="['/admin','request-detail', r.id, r.dateBorrow]"
+  [queryParams]="{ requestId: getRequestId(r) }"
+  queryParamsHandling="merge"
+>
+  ดูรายละเอียด
+</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Footer actions -->
+<div class="actions">
+  <a class="btn-back" [routerLink]="['/admin']">กลับ</a>
+</div>

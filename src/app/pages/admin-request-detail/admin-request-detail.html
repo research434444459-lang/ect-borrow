@@ -1,0 +1,133 @@
+<header class="nav" role="banner">
+  <div class="nav-wrap">
+    <a class="brand" [routerLink]="['/admin']" aria-label="ไปยังหน้าแรกผู้ดูแล">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/></svg>
+      </span>
+      <div>
+        <div class="title">ระบบยืมคืนอุปกรณ์ <span style="font-weight:600;color:#334155;">Beta</span></div>
+        <div class="subtitle">Admin Console</div>
+      </div>
+    </a>
+    <div class="spacer" aria-hidden="true"></div>
+    <nav class="nav-links" aria-label="เมนูผู้ดูแล">
+      <a [routerLink]="['/admin']" routerLinkActive="primary" [routerLinkActiveOptions]="{ exact: true }">หน้าหลัก</a>
+      <a [routerLink]="['/admin','today']" routerLinkActive="primary">รายการวันนี้</a>
+      <a routerLink="/devices">จัดการคลัง</a>
+      <a [routerLink]="['/admin','requests']" routerLinkActive="primary">จัดการคำขอ</a>
+      <button type="button" class="logout" (click)="logout()">ออกจากระบบ</button>
+    </nav>
+  </div>
+</header>
+
+<!-- Heading -->
+<div class="wrap">
+  <h1>รายละเอียดคำขอ</h1>
+  <div class="sub">ตรวจสอบข้อมูลและอัปเดตสถานะ</div>
+</div>
+
+<!-- Loading / Error -->
+<div class="wrap" *ngIf="loading">
+  <div class="notice info">กำลังดึงข้อมูล...</div>
+</div>
+<div class="wrap" *ngIf="!loading && errorMsg">
+  <div class="notice warn">{{ errorMsg }}</div>
+</div>
+
+<!-- 1) กรอบข้อมูลเดิม (Read-only) -->
+<section class="section" *ngIf="!loading && readonlyBox">
+  <div class="card">
+    <h3 class="sec-title">ข้อมูลเดิม</h3>
+    <div class="def-grid">
+      <div class="row"><div class="label">สถานะเดิม</div><div class="value"><span [class]="badgeClass()">{{ readonlyBox.status }}</span></div></div>
+      <div class="row"><div class="label">ประทับเวลา</div><div class="value">{{ readonlyBox.timestamp }}</div></div>
+      <div class="row"><div class="label">วันที่เข้ารับ</div><div class="value">{{ readonlyBox.dateBorrow }}</div></div>
+      <div class="row"><div class="label">เวลาเข้ารับ</div><div class="value">{{ readonlyBox.time }} น.</div></div>
+      <div class="row"><div class="label">วันที่คืน</div><div class="value">{{ readonlyBox.dateReturn || '-' }}</div></div>
+      <div class="row"><div class="label">ชื่อ - สกุล</div><div class="value">{{ readonlyBox.fullname }}</div></div>
+      <div class="row"><div class="label">รหัสนักศึกษา</div><div class="value">{{ readonlyBox.studentId }}</div></div>
+      <div class="row"><div class="label">เบอร์ติดต่อ</div><div class="value">{{ readonlyBox.phone || '-' }}</div></div>
+      <div class="row"><div class="label">สมาชิกกลุ่ม</div><div class="value">{{ readonlyBox.groupMembers || '-' }}</div></div>
+      <div class="row"><div class="label">รายวิชา</div><div class="value">{{ readonlyBox.courseName || '-' }}</div></div>
+      <div class="row"><div class="label">อื่นๆ</div><div class="value muted">{{ readonlyBox.courseOther || '—' }}</div></div>
+      <div class="row"><div class="label">อาจารย์</div><div class="value">{{ readonlyBox.teacher || '-' }}</div></div>
+      <div class="row"><div class="label">ผู้มอบอุปกรณ์</div><div class="value">{{ readonlyBox.giver || '-' }}</div></div>
+      <div class="row"><div class="label">ผู้รับคืน</div><div class="value">{{ readonlyBox.receiver || '-' }}</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2) โซนแก้ไขสถานะ + ผู้มอบ/ผู้รับ -->
+<section class="status" *ngIf="!loading && form">
+  <div class="status-card">
+    <div [class]="badgeClass()">{{ 'สถานะ: ' + form.controls.status.value }}</div>
+
+    <label class="inline-note" for="statusSel">เปลี่ยนสถานะ:</label>
+    <select id="statusSel" [formControl]="form.controls.status">
+      <option value="อนุมัติ">อนุมัติ</option>
+      <option value="ไม่อนุมัติ">ไม่อนุมัติ</option>
+      <option value="สละสิทธิ์">สละสิทธิ์</option>
+      <option value="อุปกรณ์ไม่พร้อมใช้งาน">อุปกรณ์ไม่พร้อมใช้งาน</option>
+      <option value="คืนของแล้ว">คืนของแล้ว</option>
+      <option value="รับของแล้ว">รับของแล้ว</option>
+    </select>
+
+    <label class="inline-note" for="giver">ผู้มอบอุปกรณ์:</label>
+    <input id="giver" class="mini" type="text" [formControl]="form.controls.giver" placeholder="">
+
+    <label class="inline-note" for="receiver">ผู้รับอุปกรณ์คืน:</label>
+    <input id="receiver" class="mini" type="text" [formControl]="form.controls.receiver" placeholder="">
+
+    <span class="spacer"></span>
+    <a class="btn-back-link" (click)="back()">ย้อนกลับ</a>
+  </div>
+</section>
+
+<!-- 3) รายการอุปกรณ์ -->
+<section class="section" *ngIf="!loading && form">
+  <div class="card">
+    <h3 class="sec-title">รายการอุปกรณ์ที่ใช้</h3>
+
+    <div class="def-grid">
+      <!-- 10 ชิ้น (คอลัมน์ O..X) -->
+      <div class="row" *ngFor="let g of items.controls; let i = index">
+        <div class="label">ชิ้นที่ {{ i + 1 }}</div>
+        <div class="value eq-wrap">
+          <div class="eq-pair">
+            <!-- ชื่ออุปกรณ์: เติมค่าล่วงหน้า (ไม่มี = '-') -->
+            <input class="wname" type="text" [formControl]="g.controls.name" placeholder="">
+            <label class="inline-note">หมายเลขอุปกรณ์:</label>
+            <!-- ลบ placeholder เดิม "เช่น C011-0003" -->
+            <input class="wnum" type="text" [formControl]="g.controls.number" placeholder="">
+            <button type="button" class="btn-del" (click)="removeItem(i)">ลบ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ลบปุ่ม “เพิ่มแถว” ออก (ตามคำขอ) -->
+
+      <!-- แถวพิเศษหลังชิ้นที่ 10 -->
+      <div class="row">
+        <div class="label">กรณีไม่พบอุปกรณ์ที่ต้องการ ให้ระบุรายการที่นี่</div>
+        <div class="value">
+          <textarea rows="2" [formControl]="form.controls.missingItems" placeholder=""></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">อุปกรณ์สำหรับงานกิจกรรม</div>
+        <div class="value">
+          <textarea rows="2" [formControl]="form.controls.activityItems" placeholder=""></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4) ปุ่มบันทึก / กลับ -->
+<div class="actions" *ngIf="!loading && form">
+  <button class="btn btn-ghost" type="button" (click)="back()" [disabled]="saving">ยกเลิก</button>
+  <button class="btn btn-primary" type="button" (click)="save()" [disabled]="saving">
+    {{ saving ? 'กำลังบันทึก...' : 'บันทึก' }}
+  </button>
+</div>

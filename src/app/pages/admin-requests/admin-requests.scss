@@ -1,0 +1,67 @@
+:host{
+  --bg:#f7f7f8; --surface:#ffffff; --text:#0f172a; --muted:#6b7280; --line:#e5e7eb; --accent:#3b82f6;
+  --radius:14px; --shadow-sm:0 1px 2px rgba(15,23,42,.06); --shadow-md:0 6px 18px rgba(15,23,42,.08);
+  display:block; background:var(--bg); color:var(--text); line-height:1.65;
+  font-family:"Noto Sans Thai", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Nav เหมือนหน้า Admin อื่นๆ */
+.nav{ position:sticky; top:0; z-index:50; background:rgba(255,255,255,.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+.nav-wrap{ max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:14px; padding:12px 16px; }
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;}
+.logo{width:38px; height:38px; border-radius:10px; background:linear-gradient(180deg, #111827, #1f2937); display:grid; place-items:center; box-shadow:var(--shadow-sm);}
+.logo svg{ width:20px; height:20px; fill:#fff; opacity:.95 }
+.title{ font-weight:700; letter-spacing:.2px; white-space:nowrap; }
+.subtitle{ color:var(--muted); font-size:.9rem; }
+.spacer{flex:1}
+.nav-links{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.nav-links a, .nav-links button{
+  text-decoration:none; color:inherit; padding:8px 12px; border-radius:10px; border:1px solid transparent;
+  transition:.18s ease; background:transparent; cursor:pointer; font:inherit;
+}
+.nav-links a:hover, .nav-links button:hover{ background:#f3f4f6; border-color:#eef2f7; }
+.nav-links a.primary, .nav-links a.active{ background: var(--accent); color:#fff; box-shadow: var(--shadow-sm); }
+
+/* Heading */
+.wrap{ max-width:1180px; margin:16px auto 8px; padding:0 16px; }
+h1{ font-size: clamp(22px, 4vw, 32px); margin: 0 0 6px; }
+.sub{ color: var(--muted); margin-top: 2px; }
+
+/* Filters */
+.filters{ max-width:1180px; margin:8px auto 14px; padding:0 16px; }
+.filter-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-sm); padding:14px; }
+.row{ display:grid; grid-template-columns: 2fr 1fr; gap:12px; }
+@media (max-width: 800px){ .row{ grid-template-columns: 1fr; } }
+label{ font-weight:700; color:#334155; font-size:.95rem; }
+input[type="text"], input[type="date"], select{
+  border:1px solid var(--line); background:#fff; color:#0f172a;
+  border-radius:10px; padding:10px 12px; font-size:1rem; outline:none; width:100%;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+input[type="text"]:focus, input[type="date"]:focus, select:focus{ border-color:#c7d2fe; box-shadow: 0 0 0 3px #eff6ff; }
+.hint{ color:var(--muted); font-size:.9rem; margin-top:6px; }
+
+/* Table */
+.table-wrap{ max-width:1180px; margin:10px auto 24px; padding:0 16px; }
+.table-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow-sm); overflow:auto; }
+table{ width:100%; border-collapse:separate; border-spacing:0; min-width:1100px; }
+thead th{
+  text-align:left; font-weight:700; color:#334155; padding:12px 14px; border-bottom:1px solid var(--line); background:#f8fafc;
+  position:sticky; top:0; z-index:1;
+}
+tbody td{ padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:middle; }
+tbody tr:hover{ background:#fafafa; }
+.index{ width:80px; }
+.btn-sm{
+  text-decoration:none; display:inline-block; padding:8px 10px; border-radius:10px; border:1px solid #cbd5e1; color:#0f172a; background:#fff;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; box-shadow: var(--shadow-sm);
+}
+.btn-sm:hover{ transform: translateY(-1px); box-shadow: var(--shadow-md); border-color:#94a3b8; }
+
+/* Footer actions */
+.actions{ max-width:1180px; margin: 6px auto 30px; padding: 0 16px; display:flex; justify-content:flex-end; }
+.btn-back{
+  text-decoration:none; background:#111827; color:#fff; border:0; border-radius:10px; padding:12px 16px; font-weight:700;
+  box-shadow: var(--shadow-sm); transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn-back:hover{ transform: translateY(-1px); box-shadow: var(--shadow-md); }
