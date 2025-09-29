@@ -119,14 +119,15 @@
           <td>{{ r.giver || '-' }}</td>
           <td>{{ r.receiver || '-' }}</td>
           <td>
+  
             <a
-  class="btn-sm"
-  [routerLink]="['/admin','request-detail', r.id, r.dateBorrow]"
-  [queryParams]="{ requestId: getRequestId(r) }"
-  queryParamsHandling="merge"
+  class="btn btn-sm"
+  [routerLink]="['/admin', 'request-detail', r.id, r.dateBorrow]"
+  (click)="$event.stopPropagation()"
 >
-  ดูรายละเอียด
+  รายละเอียด
 </a>
+
           </td>
         </tr>
       </tbody>

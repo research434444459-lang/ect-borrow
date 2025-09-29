@@ -55,4 +55,6 @@ export class AdminTodayComponent implements OnInit {
     this.auth.logout();
     this.router.navigateByUrl('/');
   }
+  
 }
+

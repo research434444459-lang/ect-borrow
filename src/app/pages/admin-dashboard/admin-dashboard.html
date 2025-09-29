@@ -1,6 +1,7 @@
 <header class="nav" role="banner">
   <div class="nav-wrap">
-    <a class="brand" [routerLink]="['/admin']" aria-label="ไปยังหน้าแรกผู้ดูแล">
+    <!-- ไป dashboard ตรง ๆ -->
+    <a class="brand" [routerLink]="['/admin','dashboard']" aria-label="ไปยังหน้าแรกผู้ดูแล">
       <span class="logo" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M5 12h6L7 22l12-10h-6l4-8L5 12z"/></svg>
       </span>
@@ -9,15 +10,21 @@
         <div class="subtitle">Admin Console</div>
       </div>
     </a>
+
     <div class="spacer" aria-hidden="true"></div>
+
     <nav class="nav-links" aria-label="เมนูผู้ดูแล">
-      <a [routerLink]="['/admin']" routerLinkActive="primary" [routerLinkActiveOptions]="{ exact: true }">หน้าหลัก</a>
-      <a class="card-link" routerLink="/admin/today">
-        <!-- รายการขอยืมวันนี้ -->
-      </a>
-      
-      <a routerLink="/devices">จัดการคลัง</a>
-      <a routerLink="/requests">จัดการคำขอ</a>
+      <a [routerLink]="['/admin','dashboard']"
+         routerLinkActive="primary"
+         [routerLinkActiveOptions]="{ exact: true }">หน้าหลัก</a>
+
+      <a routerLink="/admin/today">รายการวันนี้</a>
+
+      <!-- ยังไม่มีหน้า inventory ฝั่งแอดมิน ใช้ requests แทนชั่วคราว -->
+      <a routerLink="/admin/requests">จัดการคลัง</a>
+
+      <a routerLink="/admin/requests">จัดการคำขอ</a>
+
       <button type="button" class="logout" (click)="logout()">ออกจากระบบ</button>
     </nav>
   </div>
@@ -25,8 +32,9 @@
 
 <main class="wrap">
   <p class="intro">เลือกเมนูที่ต้องการดำเนินการ</p>
+
   <section class="grid">
-    <a class="card-link" routerLink="today">
+    <a class="card-link" routerLink="/admin/today" routerLinkActive="router-link-active">
       <div class="thumb">📅</div>
       <div class="card-text">
         <div class="card-title">รายการขอยืมวันนี้</div>
@@ -34,7 +42,8 @@
       </div>
     </a>
 
-    <a class="card-link" routerLink="/devices">
+    <!-- เปลี่ยนปลายทางชั่วคราวให้ใช้งานได้แน่ ๆ -->
+    <a class="card-link" routerLink="/admin/requests">
       <div class="thumb">📦</div>
       <div class="card-text">
         <div class="card-title">จัดการคลังอุปกรณ์</div>

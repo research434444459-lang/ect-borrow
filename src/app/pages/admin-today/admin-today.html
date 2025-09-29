@@ -107,7 +107,14 @@
           <td>{{ r.giver || '-' }}</td>
           <td>{{ r.receiver || '-' }}</td>
           <td>
-            <a class="btn-sm" [routerLink]="['/admin','request-detail', r.id, r.dateBorrow]">ดูรายละเอียด</a>
+     <!-- ปุ่ม ดูรายละเอียด -->
+     <a
+     class="btn btn-sm"
+     [routerLink]="['/admin', 'request-detail', r.id, r.dateBorrow]"
+   >
+     ดูรายละเอียด
+   </a>
+
           </td>
         </tr>
       </tbody>
